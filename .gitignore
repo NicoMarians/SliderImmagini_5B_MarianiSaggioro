@@ -1,3 +1,7 @@
+#Custom
+ca.pem
+public/conf.json
+
 # Logs
 logs
 *.log
