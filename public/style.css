@@ -16,7 +16,6 @@
   height:100%;
   background-color: lightgray; 
   left:50%;
-  margin-top:10%;
   border-radius:15px;
   flex-direction: column;
   transform:translate(-50%,0);
@@ -32,7 +31,7 @@
 }
 
 .slider-button-right {
-  position:absolute;
+  position:relative;
   width:50px;
   height:50px;
   top:50%;
