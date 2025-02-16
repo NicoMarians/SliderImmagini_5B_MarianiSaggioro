@@ -1,4 +1,5 @@
-const createMiddleware = () => {
+//Componente Middleware
+export const createMiddleware = () => {
     return {
         send: (todo) => {
             return new Promise((resolve, reject) => {
@@ -53,7 +54,8 @@ const createMiddleware = () => {
     }
 }
 
-const createForm = (add) => {
+//Componente FORM
+export const createForm = (add) => {
     const inputInsert = document.querySelector("#inputInsert");
     const buttonInsert = document.querySelector("#buttonInsert");
     buttonInsert.onclick = () => {
@@ -62,7 +64,8 @@ const createForm = (add) => {
     }
 }
 
-const createList = () => {
+//Componente Tabella
+export const createList = () => {
     const listTable = document.querySelector("#listTable");
     const template = `
                     <tr>                            
@@ -90,7 +93,8 @@ const createList = () => {
     }
 }
 
-const createBusinessLogic = (middleware, list) => {
+//Componente BusinessLogic
+export const createBusinessLogic = (middleware, list) => {
     let todos = [];
     const reload = () => {
         middleware.load()
@@ -135,6 +139,104 @@ const createController = () => {
 }
 
 
-module.export = {"middleware":createMiddleware,"controller":createController};
+//Componente Navigatore
+const hide = (elements) => {
+    elements.forEach((element) => {
+       element.classList.add("hidden");
+       element.classList.remove("visible");
+    });
+};
+ 
+const show = (element) => {
+    element.classList.add("visible");
+    element.classList.remove("hidden");
+};
+
+document.getElementById("buttonCancella").onclick = () => {
+    window.location.hash = "#home";
+};
+  
+document.getElementById("adminButton").onclick = () => {
+    window.location.hash = "#login";
+};
+ 
+export const createNavigator = (parentElement) => {
+    const pages = Array.from(parentElement.querySelectorAll(".page"));
+ 
+    const render = () => {
+       console.log("aaaaa");
+       const url = new URL(document.location.href);
+       const pageName = url.hash.replace("#", "");
+       const selected = pages.filter((page) => page.id === pageName)[0] || pages[0];
+ 
+       hide(pages);
+       show(selected);
+    }
+    window.addEventListener('popstate', render); 
+    render();
+};
 
 
+
+//Componente LOGIN
+const registerButton = document.getElementById("register-button");
+const loginButton = document.getElementById("login-button");
+const logoutButton = document.getElementById("logout-button");
+const privateSection = document.getElementById("private-section");
+const registerUsername = document.getElementById("register-username");
+const registerPassword = document.getElementById("register-password");
+const loginUsername = document.getElementById("login-username");
+const loginPassword = document.getElementById("login-password");
+
+const openModalButton = document.getElementById("openModalButton");
+const modifyButton = document.getElementById("modifyButton");
+const deleteButton = document.getElementById("deleteButton");
+
+const isLogged = sessionStorage.getItem("Logged") === "true";
+
+if (isLogged) {
+  openModalButton.classList.remove("hidden");
+  modifyButton.classList.remove("hidden");
+  deleteButton.classList.remove("hidden");
+}
+
+export const login = function (username, password) {
+  return fetch("conf.json")
+    .then((response) => response.json())
+    .then((confData) => {
+      return fetch("https://ws.cipiaceinfo.it/credential/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          key: confData.cacheToken,
+        },
+        body: JSON.stringify({ username, password }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.result === true) {
+            alert("Login effettuato con successo!");
+            openModalButton.classList.remove("hidden");
+            modifyButton.classList.remove("hidden");
+            deleteButton.classList.remove("hidden");
+            sessionStorage.setItem("Logged", "true");
+          } else {
+            alert("Credenziali errate.");
+          }
+        })
+        .catch((error) => {
+          console.error("Errore login:", error);
+          alert("Login fallito. Controlla le credenziali.");
+        });
+    });
+};
+
+loginButton.onclick = () => {
+  const username = loginUsername.value;
+  const password = loginPassword.value;
+  if (username && password) {
+    login(username, password);
+  } else {
+    alert("Compila tutti i campi.");
+  }
+};
