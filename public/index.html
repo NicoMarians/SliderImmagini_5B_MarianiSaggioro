@@ -8,26 +8,28 @@
     <title>Home</title>
 </head>
 <body style="height:100%">
-  <div id = "home" class = "visible">
-    <div class="container" style=" height:100vh">
-        <div class="row" style="height:100%; display:flex">
-            <div class="col-2">
-                <button type="button" class="admin-button" id = "adminButton"><strong>ADMIN</strong></button>
-                <button class="slider-button-left"><strong> < </strong> </button>
-            </div>
-            <div class="col-8 d-flex align-items-center justify-content-center mh-100">
-                <h1 style = "position: absolute; transform: translate(0%, -1000%);"><strong>CAROSELLO IMMAGINI</strong></h1>
-                <div class="image-slider"><img alt="IMMAGINE"></div>
-            </div>
-            <div class="col-2">
-                <button class="slider-button-right"><strong> > </strong></button>
+
+    <div class="screen-shadow"></div>
+
+    <div id = "home" class="visible">
+        <div class="container" style=" height:100vh">
+            <div class="row" style="height:100%; display:flex">
+                <div class="col-2">
+                    <button type="button" class="admin-button" id = "adminButton"><strong>ADMIN</strong></button>
+                    <button class="slider-button-left"><strong> < </strong> </button>
+                </div>
+                <div class="col-8 d-flex align-items-center justify-content-center mh-100">
+                    <h1 style = "position: absolute; transform: translate(0%, -1000%);"><strong>CAROSELLO IMMAGINI</strong></h1>
+                    <div class="image-slider"><img alt="IMMAGINE"></div>
+                </div>
+                <div class="col-2">
+                    <button class="slider-button-right"><strong> > </strong></button>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
-  <div id = "login" class = "hidden">
-    <div class="screen-shadow"></div>
+    <div id="login" class="hidden">
         <div style="z-index: 3; position:absolute; top:25%;left: 50%;transform: translate(-50%,0);">
             <div class="login-container">
                 <h1><b>Login</b></h1>
@@ -37,7 +39,36 @@
                 <button class="button-conferma" type="button">Conferma</button>
             </div>
         </div>
-  </div>
+    </div>
+    
+    <div id="admin" class="hidden">
+        <div style="padding-top: 3%;"></div>
+            <div class="back-container">
+                <div style="text-align: center;" id="tabellaImmagini">
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="insert" class="hidden">
+        <div style="z-index: 3; position:absolute; top:25%;left: 50%;transform: translate(-50%,0);">
+            <div class="form-container">
+                <h1><b>Aggiungi</b></h1>
+                <input class="input-normali" id="file" name="file" type="file" single>
+                <br>
+                <br>
+                <button class="button-cancella" type="button">Cancella</button>
+                <button class="button-conferma" type="button">Aggiungi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view" class="visible" style="padding-top: 3%;"></div>
+        <div class="image-container">
+            <img alt = "IMMAGINE" style="height:100%">
+        </div>
+    </div>
 
   <script src="./index.js" type="module"></script>
   <script src="./navigator.js" type="module"></script>
