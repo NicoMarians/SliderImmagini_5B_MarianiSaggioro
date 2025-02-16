@@ -10,6 +10,35 @@
     transform:translate(-50%,0)
 }
 
+.image-slider {
+  position:relative;
+  width:100%; 
+  height:100%;
+  background-color: lightgray; 
+  left:50%;
+  margin-top:10%;
+  border-radius:15px;
+  flex-direction: column;
+  transform:translate(-50%,0);
+}
+
+.slider-button-left {
+  position:relative;
+  width:50px;
+  height:50px;
+  float:right;
+  top:50%;
+  transform:translate(0,-50%);
+}
+
+.slider-button-right {
+  position:absolute;
+  width:50px;
+  height:50px;
+  top:50%;
+  transform:translate(0,-50%);
+}
+
 .delete-button {
     width:50px;
     height:50px;
@@ -18,6 +47,17 @@
     float:right;
     margin-right:10px;
     font-size: 25px;
+}
+
+.admin-button {
+  width:100px;
+  height:50px;
+  background-color: lightgray;
+  text-align: center;
+  margin-right:10px;
+  font-size: 25px;
+  border-radius:10px;
+  border-width:1px;
 }
 
 .add-button {
@@ -107,18 +147,6 @@
     display: none;
  }
 
- .data-ora-checkbox-yes {
-  width: 30px;
-  height: 30px;
-  margin-top:-40px;
-  background-color: greenyellow;
-  margin-bottom:10px;
- }
-
- .data-ora-checkbox-no {
-  width: 30px;
-  height: 30px;
-  margin-top:-40px;
-  background-color: red;
-  margin-bottom:10px;
+ .page {
+  opacity: 100%;
  }
