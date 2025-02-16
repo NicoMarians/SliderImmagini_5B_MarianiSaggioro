@@ -1,14 +1,14 @@
 //Componente Middleware
 export const createMiddleware = () => {
     return {
-        send: (todo) => {
+        send: (images) => {
             return new Promise((resolve, reject) => {
-                fetch("/todo/add", {
+                fetch("/images/add", {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(todo)
+                    body: JSON.stringify(images)
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -18,21 +18,21 @@ export const createMiddleware = () => {
         },
         load: () => {
             return new Promise((resolve, reject) => {
-                fetch("/todo")
+                fetch("/images")
                     .then((response) => response.json())
                     .then((json) => {
                         resolve(json); // risposta del server con la lista         
                     })
             })
         },
-        put: (todo) => {
+        put: (images) => {
             return new Promise((resolve, reject) => {
-                fetch("/todo/complete", {
+                fetch("/images/complete", {
                     method: 'PUT',
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(todo)
+                    body: JSON.stringify(images)
                 })
                     .then((response) => response.json())
                     .then((json) => {
@@ -42,7 +42,7 @@ export const createMiddleware = () => {
         },
         delete: (id) => {
             return new Promise((resolve, reject) => {
-                fetch("/todo/" + id, {
+                fetch("/images/" + id, {
                     method: 'DELETE'                
                 })
                     .then((response) => response.json())
@@ -54,40 +54,32 @@ export const createMiddleware = () => {
     }
 }
 
-//Componente FORM
-export const createForm = (add) => {
-    const inputInsert = document.querySelector("#inputInsert");
-    const buttonInsert = document.querySelector("#buttonInsert");
-    buttonInsert.onclick = () => {
-        add(inputInsert.value);
-        inputInsert.value = "";
-    }
-}
-
 //Componente Tabella
-export const createList = () => {
-    const listTable = document.querySelector("#listTable");
-    const template = `
-                    <tr>                            
-                        <td class="%COLOR">%TASK</td>
-                        <td><button class="btn btn-success" id="COMPLETE_%ID" type="button">COMPLETA</button></td>                            
-                        <td><button class="btn btn-danger" id="DELETE_%ID" type="button">ELIMINA</button></td>                                                    
-                    </tr>
-    `;
+export const createList = (newElement) => {
+    let tableData;
+    const bindingElement = newElement;
     return {
         render: (todos, completeTodo, deleteTodo) => {
-            let html = "";
-            todos.forEach((todo) => {
-                let row = template.replace("COMPLETE_%ID", "COMPLETE_" + todo.id);
-                row = row.replace("DELETE_%ID", "DELETE_" + todo.id);
-                row = row.replace("%TASK", todo.name);
-                row = row.replace("%COLOR", todo.completed ? "text-success" : "text-primary");
-                html += row;
+            let line = `
+            <h1>IMMAGINI</h1>
+            <div style="text-align: left; padding-bottom:2%;">
+                <h1 class="add-title">Aggiungi foto</h1>
+                <button class="add-button"><b>+</b></button>
+            </div>`;
+            tableData.forEach((image,index) => {
+                //--------------------------------------------CAMBIARE NOME-------------------------------------------------------
+                const imageName = image.url
+                row += `<div style="text-align: left; padding-bottom:2%;">
+                            <a href=""><h1 class="image-name">${imageName}</h1></a>
+                            <button id="button-delete-${index}" class="delete-button"><b>X</b></button>
+                        </div>`
             });
-            listTable.innerHTML = html;
-            todos.forEach((todo) => {
-                document.querySelector("#COMPLETE_" + todo.id).onclick = () => completeTodo(todo.id);
-                document.querySelector("#DELETE_" + todo.id).onclick = () => deleteTodo(todo.id);
+            bindingElement.innerHTML = html;
+
+            tableData.forEach((images,index) => {
+                document.getElementById(`button-delete-${index}`).onclick = () => {
+                    //--------------------------------------FINIRE-------------------------------------------
+                }
             })
         }
     }
@@ -200,7 +192,7 @@ if (isLogged) {
   deleteButton.classList.remove("hidden");
 }
 
-export const login = function (username, password) {
+export const createLogin = function (username, password) {
   return fetch("conf.json")
     .then((response) => response.json())
     .then((confData) => {
