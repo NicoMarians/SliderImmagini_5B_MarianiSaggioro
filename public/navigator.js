@@ -9,8 +9,16 @@ const show = (element) => {
     element.classList.add("visible");
     element.classList.remove("hidden");
 }
+
+document.getElementById("homeButton").onclick = () => {
+    window.location.hash = "#home";
+  };
+  
+document.getElementById("adminButton").onclick = () => {
+    window.location.hash = "#admin";
+};
  
-export const createNavigator = (parentElement) => {
+const createNavigator = (parentElement) => {
     const pages = Array.from(parentElement.querySelectorAll(".page"));
  
     const render = () => {
@@ -25,3 +33,5 @@ export const createNavigator = (parentElement) => {
     window.addEventListener('popstate', render); 
     render();
 }
+
+module.exports = createNavigator;
