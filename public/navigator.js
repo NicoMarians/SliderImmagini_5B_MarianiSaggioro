@@ -3,22 +3,22 @@ const hide = (elements) => {
        element.classList.add("hidden");
        element.classList.remove("visible");
     });
-}
+};
  
 const show = (element) => {
     element.classList.add("visible");
     element.classList.remove("hidden");
-}
+};
 
-document.getElementById("homeButton").onclick = () => {
+document.getElementById("buttonCancella").onclick = () => {
     window.location.hash = "#home";
-  };
+};
   
 document.getElementById("adminButton").onclick = () => {
-    window.location.hash = "#admin";
+    window.location.hash = "#login";
 };
  
-const createNavigator = (parentElement) => {
+export const createNavigator = (parentElement) => {
     const pages = Array.from(parentElement.querySelectorAll(".page"));
  
     const render = () => {
@@ -32,6 +32,4 @@ const createNavigator = (parentElement) => {
     }
     window.addEventListener('popstate', render); 
     render();
-}
-
-module.exports = createNavigator;
+};

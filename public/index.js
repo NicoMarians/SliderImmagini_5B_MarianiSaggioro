@@ -1,3 +1,3 @@
-const createNavigator = require("./navigator");
+import { createNavigator } from "./navigator"
 
-const navigator = createNavigator();
+const navigator = createNavigator;
