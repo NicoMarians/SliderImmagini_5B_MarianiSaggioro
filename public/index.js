@@ -5,4 +5,4 @@ const middleware = createMiddleware;
 const form = createForm;
 const table = createList;
 const businessLogic = createBusinessLogic;
-const Login = login;
+const login = login;
