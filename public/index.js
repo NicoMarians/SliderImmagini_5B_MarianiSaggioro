@@ -1,4 +1,4 @@
-import { createNavigator, createMiddleware, createList, createBusinessLogic, createLogin } from "./components.js";
+import { createNavigator, createMiddleware, createList, createBusinessLogic, createLogin, pubSub } from "./components.js";
 
 const navigator = createNavigator();
 const middleware = createMiddleware();
@@ -6,23 +6,9 @@ const table = createList(document.getElementById("tabellaImmagini"));
 const businessLogic = createBusinessLogic();
 const login = createLogin();
 
-document.getElementById("buttonConfermaLogin").onclick = () => {
-    const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
-    if (username && password) {
-        login.checkLogin(username, password).then((result) => {
-            console.log(result);
-            if (result === true) {
-                login.validateLogin();
-                window.location.hash = "#admin";
-            } else {
-                alert("Credenziali errate");
-            }
-        }, console.log);
-    } else {
-      alert("Compila tutti i campi.");
-    }
-};
+pubSub.subscribe("delete", (id) => {
+    middleware.delete(id);
+});
 
 //Upload File
 const inputFile = document.querySelector('#file');
@@ -60,3 +46,23 @@ const handleSubmit = async (event) => {
         console.log(e);
     }
 }
+
+
+document.getElementById("buttonConfermaLogin").onclick = () => {
+    const username = document.getElementById("loginUsername").value;
+    const password = document.getElementById("loginPassword").value;
+    if (username && password) {
+        login.checkLogin(username, password).then((result) => {
+            console.log(result);
+            if (result === true) {
+                login.validateLogin();
+                window.location.hash = "#admin";
+            } else {
+                alert("Credenziali errate");
+            }
+        }, console.log);
+    } else {
+      alert("Compila tutti i campi.");
+    }
+};
+
