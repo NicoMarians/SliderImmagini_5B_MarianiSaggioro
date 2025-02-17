@@ -1,4 +1,4 @@
-import { createNavigator, createMiddleware, createForm, createList, createBusinessLogic, createLogin } from "./components";
+import { createNavigator, createMiddleware, createList, createBusinessLogic, createLogin } from "./components.js";
 
 const navigator = createNavigator();
 const middleware = createMiddleware();
