@@ -65,7 +65,7 @@ export const createList = (newElement) => {
             <h1>IMMAGINI</h1>
             <div style="text-align: left; padding-bottom:2%;">
                 <h1 class="add-title">Aggiungi foto</h1>
-                <button class="add-button"><b>+</b></button>
+                <button class="add-button" id = "add-image-button"><b>+</b></button>
             </div>`;
             tableData.forEach((image,) => {
                 let temp = image.url.split("/");
@@ -76,6 +76,9 @@ export const createList = (newElement) => {
                         </div>`
             });
             bindingElement.innerHTML = line;
+            document.getElementById("add-image-button").onclick = () => {
+                window.location.hash = "#insert";
+            }
 
             pubSub.publish("setDeleteOnclick");
         },

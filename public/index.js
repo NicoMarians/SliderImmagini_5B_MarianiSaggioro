@@ -99,4 +99,8 @@ document.getElementById("adminButton").onclick = () => {
     window.location.hash = "#login";
 };
 
+document.getElementById("buttonConfermaFile").onclick = () => {
+    let path = document.getElementById("inputFile").value;
+    console.log(path);
+};
 
