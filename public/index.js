@@ -6,6 +6,16 @@ const table = createList(document.getElementById("tabellaImmagini"));
 const businessLogic = createBusinessLogic();
 const login = createLogin();
 
+document.getElementById("buttonConfermaLogin").onclick = () => {
+    const username = document.getElementById("loginUsername").value;
+    const password = document.getElementById("loginPassword").value;
+    if (username && password) {
+        login.checkLogin(username, password).then(console.log, console.log);
+    } else {
+      alert("Compila tutti i campi.");
+    }
+};
+
 //Upload File
 const inputFile = document.querySelector('#file');
 const button = document.querySelector("#button");

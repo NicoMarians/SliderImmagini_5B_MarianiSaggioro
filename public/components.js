@@ -144,8 +144,8 @@ document.getElementById("adminButton").onclick = () => {
     window.location.hash = "#login";
 };
  
-export const createNavigator = (parentElement) => {
-    const pages = Array.from(parentElement.querySelectorAll(".page"));
+export const createNavigator = () => {
+    const pages = Array.from(document.querySelectorAll(".page"));
  
     const render = () => {
        console.log("aaaaa");
@@ -170,52 +170,36 @@ if (isLogged) {
   deleteButton.classList.remove("hidden");
 }
 
-export const createLogin = function (username, password) {
+export const createLogin = () => {
     let isLogged = false;
     return {
         checkLogin: (username, password) => {
-            fetch("conf.json")
-        .then((response) => response.json())
-        .then((confData) => {
-        return fetch("https://ws.cipiaceinfo.it/credential/login", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            key: confData.cacheToken,
-            },
-            body: JSON.stringify({ username, password }),
-        })
-            .then((response) => response.json())
-            .then((result) => {
-            if (result.result === true) {
-                alert("Login effettuato con successo!");
-                openModalButton.classList.remove("hidden");
-                modifyButton.classList.remove("hidden");
-                deleteButton.classList.remove("hidden");
-                sessionStorage.setItem("Logged", "true");
-            } else {
-                alert("Credenziali errate.");
-            }
-            })
-            .catch((error) => {
-            console.error("Errore login:", error);
-            alert("Login fallito. Controlla le credenziali.");
+            fetch("conf.json").then((response) => response.json()).then((confData) => {
+                new Promise ((resolve,reject) => {
+                    fetch("https://ws.cipiaceinfo.it/credential/login", {
+                        method: "POST",
+                        headers: {
+                        "Content-Type": "application/json",
+                        key: confData.loginToken,
+                        },
+                        body: JSON.stringify({ username, password }),
+                    })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        resolve(result)
+                    })
+                    .catch((error) => {
+                        console.error("Errore login:", error);
+                        alert("Login fallito. Controlla le credenziali.");
+                        reject (result)
+                    });
+                })
             });
-        });
         },
         validateLogin: () => {
-            
+            isLogged = true;
         },
     }
   return
 };
 
-loginButton.onclick = () => {
-  const username = loginUsername.value;
-  const password = loginPassword.value;
-  if (username && password) {
-    login(username, password);
-  } else {
-    alert("Compila tutti i campi.");
-  }
-};
