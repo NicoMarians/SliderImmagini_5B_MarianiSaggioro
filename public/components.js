@@ -162,14 +162,6 @@ export const createNavigator = (parentElement) => {
 
 
 //Componente LOGIN
-const loginButton = document.getElementById("login-button");
-const loginUsername = document.getElementById("login-username");
-const loginPassword = document.getElementById("login-password");
-
-const openModalButton = document.getElementById("openModalButton");
-const modifyButton = document.getElementById("modifyButton");
-const deleteButton = document.getElementById("deleteButton");
-
 const isLogged = sessionStorage.getItem("Logged") === "true";
 
 if (isLogged) {
@@ -179,34 +171,43 @@ if (isLogged) {
 }
 
 export const createLogin = function (username, password) {
-  return fetch("conf.json")
-    .then((response) => response.json())
-    .then((confData) => {
-      return fetch("https://ws.cipiaceinfo.it/credential/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          key: confData.cacheToken,
-        },
-        body: JSON.stringify({ username, password }),
-      })
+    let isLogged = false;
+    return {
+        checkLogin: (username, password) => {
+            fetch("conf.json")
         .then((response) => response.json())
-        .then((result) => {
-          if (result.result === true) {
-            alert("Login effettuato con successo!");
-            openModalButton.classList.remove("hidden");
-            modifyButton.classList.remove("hidden");
-            deleteButton.classList.remove("hidden");
-            sessionStorage.setItem("Logged", "true");
-          } else {
-            alert("Credenziali errate.");
-          }
+        .then((confData) => {
+        return fetch("https://ws.cipiaceinfo.it/credential/login", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            key: confData.cacheToken,
+            },
+            body: JSON.stringify({ username, password }),
         })
-        .catch((error) => {
-          console.error("Errore login:", error);
-          alert("Login fallito. Controlla le credenziali.");
+            .then((response) => response.json())
+            .then((result) => {
+            if (result.result === true) {
+                alert("Login effettuato con successo!");
+                openModalButton.classList.remove("hidden");
+                modifyButton.classList.remove("hidden");
+                deleteButton.classList.remove("hidden");
+                sessionStorage.setItem("Logged", "true");
+            } else {
+                alert("Credenziali errate.");
+            }
+            })
+            .catch((error) => {
+            console.error("Errore login:", error);
+            alert("Login fallito. Controlla le credenziali.");
+            });
         });
-    });
+        },
+        validateLogin: () => {
+            
+        },
+    }
+  return
 };
 
 loginButton.onclick = () => {

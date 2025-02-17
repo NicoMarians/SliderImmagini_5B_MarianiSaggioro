@@ -1,11 +1,10 @@
 import { createNavigator, createMiddleware, createForm, createList, createBusinessLogic, createLogin } from "./components";
 
 const navigator = createNavigator();
-const middleware = createMiddleware;
-const form = createForm;
-const table = createList;
-const businessLogic = createBusinessLogic;
-const login = createLogin;
+const middleware = createMiddleware();
+const table = createList(document.getElementById("tabellaImmagini"));
+const businessLogic = createBusinessLogic();
+const login = createLogin();
 
 //Upload File
 const inputFile = document.querySelector('#file');
