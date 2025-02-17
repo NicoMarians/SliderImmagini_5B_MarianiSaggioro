@@ -2,6 +2,7 @@
 ca.pem
 public/conf.json
 files
+package-lock.json
 
 # Logs
 logs
