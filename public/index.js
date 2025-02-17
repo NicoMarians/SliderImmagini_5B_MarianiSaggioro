@@ -6,9 +6,15 @@ const table = createList(document.getElementById("tabellaImmagini"));
 const businessLogic = createBusinessLogic();
 const login = createLogin();
 
-pubSub.subscribe("delete", (id) => {
-    middleware.delete(id);
+pubSub.subscribe("setDeleteOnclick",() => {
+    const data = middleware.load();
+    data.forEach((element) => {
+        document.getElementById(`button-delete-${element.id}`).onclick = () => {
+            middleware.delete(element.id);
+        }
+    });
 });
+
 
 //Upload File
 const inputFile = document.querySelector('#file');

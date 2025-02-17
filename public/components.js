@@ -45,12 +45,11 @@ const createPubSub = () => {
     return {
         subscribe: (eventName, callback) => {
             if (!dict[eventName]) {
-                dict[eventName] = [];
+                dict[eventName] = callback;
             }
-            dict[eventName].push(callback);
         },
         publish: (eventName) => {
-            dict[eventName].forEach((callback) => callback());
+            dict[eventName];
         }
     }
 }
@@ -61,65 +60,32 @@ export const createList = (newElement) => {
     let tableData;
     const bindingElement = newElement;
     return {
-        render: (todos, completeTodo, deleteTodo) => {
+        render: () => {
             let line = `
             <h1>IMMAGINI</h1>
             <div style="text-align: left; padding-bottom:2%;">
                 <h1 class="add-title">Aggiungi foto</h1>
                 <button class="add-button"><b>+</b></button>
             </div>`;
-            tableData.forEach((image,index) => {
+            tableData.forEach((image,) => {
                 let temp = image.url.split("/");
                 const imageName = temp[temp.length - 1];
                 row += `<div style="text-align: left; padding-bottom:2%;">
                             <a href=""><h1 class="image-name">${imageName}</h1></a>
-                            <button id="button-delete-${index}" class="delete-button"><b>X</b></button>
+                            <button id="button-delete-${image.id}" class="delete-button"><b>X</b></button>
                         </div>`
             });
-            bindingElement.innerHTML = html;
+            bindingElement.innerHTML = line;
 
-            tableData.forEach((images,index) => {
-                document.getElementById(`button-delete-${index}`).onclick = () => {
-                    pubSub.publish("delete");
-                    //--------------------------------------FINIRE-------------------------------------------
-                }
-            })
+            pubSub.publish("setDeleteOnclick");
+        },
+        setTableData: (newData) => {
+            tableData = newData;
         }
     }
 }
 
 //Componente BusinessLogic
-export const createBusinessLogic = (middleware, list) => {
-    let todos = [];
-    const reload = () => {
-        middleware.load()
-        .then((json) => {
-            todos = json.todos;
-            list.render(todos, completeTodo, deleteTodo);
-        })
-    }
-    const completeTodo = (id) => {
-        const todo = todos.filter((todo) => todo.id === id)[0];
-        middleware.put(todo)
-            .then(() => reload());
-    }
-    const deleteTodo =  (id) => {
-        console.log("delete " + id);
-        middleware.delete(id)
-        .then(() => reload());
-    }
-    return {
-        add: (task) => {
-            const todo = {
-                name: task,
-                completed: false
-            }
-            middleware.send({ todo: todo })
-                .then(() => reload());
-        },
-        reload: reload
-    }
-}
 
 const createController = () => {
     
