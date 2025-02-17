@@ -1,6 +1,7 @@
 #Custom
 ca.pem
 public/conf.json
+files
 
 # Logs
 logs
