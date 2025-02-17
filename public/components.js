@@ -57,7 +57,7 @@ export const pubSub = createPubSub();
 
 //Componente Tabella
 export const createList = (newElement) => {
-    let tableData;
+    let tableData = [];
     const bindingElement = newElement;
     return {
         render: () => {
@@ -85,33 +85,35 @@ export const createList = (newElement) => {
     }
 }
 
-//Componente BusinessLogic
-
-const createController = () => {
-    
+//Componente Carosello
+export const createCarosello = (newElement) => {
+    let images = [];
+    const bindingElement = newElement;
+    let displayedImage = 0;
+    return {
+        render: () => {
+            bindingElement.innerHTML = `<img href="${images[displayedImage].url}" alt="IMMAGINE">`
+        },
+        setImages: () => {
+            pubSub.publish("get").then((newImages) => {
+                images = newImages;
+            })
+            
+        },
+        displayImageRight: () => {
+            if (displayedImage + 1 >= images.length) displayedImage = 0;
+            else displayedImage += 1
+            pubSub.publish("renderCarosello");
+        },
+        displayImageLeft: () => {
+            if (displayedImage - 1 < 0) displayedImage = images.length - 1;
+            else displayedImage -= 1
+            pubSub.publish("renderCarosello");
+        }
+    }
 }
 
-
 //Componente Navigatore
-const hide = (elements) => {
-    elements.forEach((element) => {
-       element.classList.add("hidden");
-       element.classList.remove("visible");
-    });
-};
- 
-const show = (element) => {
-    element.classList.add("visible");
-    element.classList.remove("hidden");
-};
-
-document.getElementById("buttonCancella").onclick = () => {
-    window.location.hash = "#home";
-};
-  
-document.getElementById("adminButton").onclick = () => {
-    window.location.hash = "#login";
-};
 
 export const createNavigator = () => {
     const pages = Array.from(document.querySelectorAll(".page"));
@@ -162,5 +164,20 @@ export const createLogin = () => {
         },
     }
   return
+};
+
+
+//Funzioni
+
+const hide = (elements) => {
+    elements.forEach((element) => {
+       element.classList.add("hidden");
+       element.classList.remove("visible");
+    });
+};
+ 
+const show = (element) => {
+    element.classList.add("visible");
+    element.classList.remove("hidden");
 };
 

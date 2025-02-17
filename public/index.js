@@ -1,10 +1,12 @@
-import { createNavigator, createMiddleware, createList, createBusinessLogic, createLogin, pubSub } from "./components.js";
+import { createNavigator, createMiddleware, createList, createLogin, pubSub, createCarosello } from "./components.js";
 
 const navigator = createNavigator();
 const middleware = createMiddleware();
 const table = createList(document.getElementById("tabellaImmagini"));
-const businessLogic = createBusinessLogic();
 const login = createLogin();
+const carosello = createCarosello(document.getElementById("divCarosello"));
+
+table.render();
 
 pubSub.subscribe("setDeleteOnclick",() => {
     const data = middleware.load();
@@ -15,6 +17,13 @@ pubSub.subscribe("setDeleteOnclick",() => {
     });
 });
 
+pubSub.subscribe("renderCarosello",carosello.render);
+
+//Servizi middleware
+pubSub.subscribe("get",middleware.load);
+pubSub.subscribe("set",middleware.send);
+pubSub.subscribe("del",middleware.delete);
+
 
 //Upload File
 const inputFile = document.querySelector('#file');
@@ -22,7 +31,7 @@ const button = document.querySelector("#button");
 const link = document.querySelector("#link");
 
 const render = async () => {
-    const list = await fetch("/filelist");
+    const list = await fetch("/files");
     const data = await list.json();
 
     const html = data
@@ -54,6 +63,8 @@ const handleSubmit = async (event) => {
 }
 
 
+//BOTTONI
+
 document.getElementById("buttonConfermaLogin").onclick = () => {
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
@@ -71,4 +82,21 @@ document.getElementById("buttonConfermaLogin").onclick = () => {
       alert("Compila tutti i campi.");
     }
 };
+
+document.getElementById("bottoneCaroselloDestra").onclick = () => {
+    carosello.displayImageRight();
+}
+
+document.getElementById("bottoneCaroselloSinistra").onclick = () => {
+    carosello.displayImageLeft();
+}
+
+document.getElementById("buttonCancella").onclick = () => {
+    window.location.hash = "#home";
+};
+  
+document.getElementById("adminButton").onclick = () => {
+    window.location.hash = "#login";
+};
+
 

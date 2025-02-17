@@ -2,12 +2,14 @@ const fs = require("fs");
 const mysql = require("mysql2")
 const conf = JSON.parse(fs.readFileSync("./public/conf.json")).dbLogin;
 
+
 conf.ssl = {
     ca: fs.readFileSync(__dirname + '/ca.pem')
 }
 
-console.log(conf)
-const connection = mysql.createConnection(conf);
+//console.log(conf)
+const connection = mysql.createConnection(conf)
+//console.log(connection);
 
 const executeQuery = (query,parametri) => {
     return new Promise((resolve, reject) => {      
@@ -62,4 +64,5 @@ const database = {
     });
     }
 }
+
 module.exports = database;

@@ -6,8 +6,8 @@ const cors = require("cors");
 
 const app = express();
 
-const database = require("./database");
-database.createTable();
+const database = require("./database.js");
+//database.createTable();
 
 app.use(cors());
 
