@@ -31,7 +31,7 @@ const database = {
         CREATE TABLE IF NOT EXISTS slider
             ( 
             id INT PRIMARY KEY AUTO_INCREMENT,
-            url VARCHAR(255) NOT NULL,
+            url VARCHAR(255) NOT NULL
             )`);      
     },
 

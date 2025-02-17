@@ -40,7 +40,8 @@
     </div>
     
     <div id="admin" class="page visible">
-        <div style="padding-top: 3%;">
+        <div>
+            <button class="admin-button" id="home-button-admin">Home</button>
             <div class="back-container">
                 <div style="text-align: center;" id="tabellaImmagini">
                 </div>
@@ -55,14 +56,15 @@
                 <input class="input-normali" id="inputFile" name="file" type="file" single>
                 <br>
                 <br>
-                <button class="button-cancella" type="button" id = "buttonCancellaFile">Cancella</button>
-                <button class="button-conferma" type="button" id = "buttonConfermaFile">Aggiungi</button>
+                <button type="button" class="button-cancella" id = "buttonCancellaFile">Cancella</button>
+                <button type="button" class="button-conferma"  id = "buttonConfermaFile">Aggiungi</button>
             </div>
         </div>
     </div>
 
-    <div id="view" class="page hidden" style="padding-top: 3%;">
-        <div class="image-container">
+    <div id="view" class="page hidden">
+        <button class="admin-button" id="back-button-view">Back</button>
+        <div class="image-container" id="viewImmagine">
             <img alt = "IMMAGINE" style="height:100%">
         </div>
     </div>

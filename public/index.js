@@ -6,7 +6,14 @@ const table = createList(document.getElementById("tabellaImmagini"));
 const login = createLogin();
 const carosello = createCarosello(document.getElementById("divCarosello"));
 
-table.render();
+middleware.load().then((newData) => {
+    console.log(newData);
+    table.setTableData(newData);
+    carosello.setImages(newData);
+    table.render();
+})
+
+
 
 pubSub.subscribe("setDeleteOnclick",() => {
     const data = middleware.load();
@@ -26,26 +33,9 @@ pubSub.subscribe("del",middleware.delete);
 
 
 //Upload File
-const inputFile = document.querySelector('#file');
-const button = document.querySelector("#button");
-const link = document.querySelector("#link");
-
-const render = async () => {
-    const list = await fetch("/files");
-    const data = await list.json();
-
-    const html = data
-        .map(e => `<li><a href="${e}">${e}</a></li>`)
-        .join("");
-
-    link.innerHTML = `<ul>${html}</ul>`; 
-};
-
-(async () => {
-    await render();
-})();
 
 const handleSubmit = async (event) => {
+    const inputFile = document.getElementById('inputFile');
     const formData = new FormData();
     formData.append("file", inputFile.files[0]);
     const body = formData;
@@ -54,12 +44,19 @@ const handleSubmit = async (event) => {
         body: body
     };
     try {
-        const res = await fetch("/upload", fetchOptions);
-        const data = await res.json();
-        await render();
+        const res = await fetch("http://localhost:5600/slider/add", fetchOptions);
+        const image = res.json();
+        window.location.hash = "#admin";
+        middleware.load().then((newData) => {
+            console.log(newData);
+            table.setTableData(newData);
+            carosello.setImages(newData);
+        })  
     } catch (e) {
         console.log(e);
     }
+
+    //middleware.send({url:inputFile.files[0].name}).then(console.log);
 }
 
 
@@ -99,8 +96,12 @@ document.getElementById("adminButton").onclick = () => {
     window.location.hash = "#login";
 };
 
-document.getElementById("buttonConfermaFile").onclick = () => {
-    let path = document.getElementById("inputFile").value;
-    console.log(path);
-};
+document.getElementById("buttonConfermaFile").onclick = handleSubmit;
 
+document.getElementById("back-button-view").onclick = () => {
+    window.location.hash = "#admin";
+}
+
+document.getElementById("home-button-admin").onclick = () => {
+    window.location.hash = "#home"
+}

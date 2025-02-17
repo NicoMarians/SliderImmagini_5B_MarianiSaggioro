@@ -7,7 +7,7 @@ const cors = require("cors");
 const app = express();
 
 const database = require("./database.js");
-//database.createTable();
+database.createTable();
 
 app.use(cors());
 
@@ -21,12 +21,17 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage}).single('file');
+
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/files", express.static(path.join(__dirname, "files")));
-app.post('/upload',multer({ storage: storage}).single('file'),async (req, res) => {
-    await database.insert("./files/" + req.file.originalname)  
-    res.json({result: "ok"});    
-})
+
+app.post("/slider/add", (req, res) => {
+    upload(req, res, (err) => {
+        console.log('File caricato:', req.file.filename);
+        database.insert({ url: "./files/" + req.file.filename });
+        res.json({ url: "./files/" + req.file.filename });
+    });
+});
 app.get('/slider',async (req, res) => {
     const list = await database.select();
     res.json(list);    

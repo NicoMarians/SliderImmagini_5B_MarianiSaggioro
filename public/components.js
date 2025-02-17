@@ -1,33 +1,33 @@
 //Componente Middleware
 export const createMiddleware = () => {
     return {
-        send: (images) => {
+        send: (image) => {
             return new Promise((resolve, reject) => {
-                fetch("/images/add", {
+                fetch("http://localhost:5600/slider/add", {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(images)
+                    body: JSON.stringify(image)
                 })
                     .then((response) => response.json())
                     .then((json) => {
-                        resolve(json); // risposta del server all'aggiunta
+                        resolve(json);
                     })
             })
         },
         load: () => {
             return new Promise((resolve, reject) => {
-                fetch("/images")
+                fetch("http://localhost:5600/slider")
                     .then((response) => response.json())
                     .then((json) => {
-                        resolve(json); // risposta del server con la lista         
+                        resolve(json);       
                     })
             })
         },
         delete: (id) => {
             return new Promise((resolve, reject) => {
-                fetch("/images/" + id, {
+                fetch("http://localhost:5600/slider/" + id, {
                     method: 'DELETE'                
                 })
                     .then((response) => response.json())
@@ -67,11 +67,11 @@ export const createList = (newElement) => {
                 <h1 class="add-title">Aggiungi foto</h1>
                 <button class="add-button" id = "add-image-button"><b>+</b></button>
             </div>`;
-            tableData.forEach((image,) => {
+            tableData.forEach((image,index) => {
                 let temp = image.url.split("/");
                 const imageName = temp[temp.length - 1];
-                row += `<div style="text-align: left; padding-bottom:2%;">
-                            <a href=""><h1 class="image-name">${imageName}</h1></a>
+                line += `<div style="text-align: left; padding-bottom:2%;">
+                            <a id="view-${index}"><h1 class="image-name">${imageName}</h1></a>
                             <button id="button-delete-${image.id}" class="delete-button"><b>X</b></button>
                         </div>`
             });
@@ -79,6 +79,14 @@ export const createList = (newElement) => {
             document.getElementById("add-image-button").onclick = () => {
                 window.location.hash = "#insert";
             }
+
+            tableData.forEach((image,index) => {
+                document.getElementById(`view-${index}`).onclick = () => {
+                    console.log(image.url);
+                    document.getElementById("viewImmagine").innerHTML = `<img alt = "IMMAGINE" src="../${image.url}" style="height:100%">`;
+                    window.location.hash = "#view";
+                }
+            });
 
             pubSub.publish("setDeleteOnclick");
         },
@@ -97,11 +105,8 @@ export const createCarosello = (newElement) => {
         render: () => {
             bindingElement.innerHTML = `<img href="${images[displayedImage].url}" alt="IMMAGINE">`
         },
-        setImages: () => {
-            pubSub.publish("get").then((newImages) => {
-                images = newImages;
-            })
-            
+        setImages: (newImages) => {
+            images = newImages
         },
         displayImageRight: () => {
             if (displayedImage + 1 >= images.length) displayedImage = 0;
