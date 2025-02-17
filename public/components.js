@@ -118,14 +118,6 @@ export const createBusinessLogic = (middleware, list) => {
     }
 }
 
-const middleware = createMiddleware();
-const list = createList();
-const businessLogic = createBusinessLogic(middleware, list);
-const form = createForm(businessLogic.add);
-businessLogic.reload();
-
-
-
 const createController = () => {
     
 }
@@ -167,7 +159,6 @@ export const createNavigator = (parentElement) => {
     window.addEventListener('popstate', render); 
     render();
 };
-
 
 
 //Componente LOGIN
