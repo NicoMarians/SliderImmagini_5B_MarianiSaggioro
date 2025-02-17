@@ -1,6 +1,8 @@
+//Implementazioni librerie
 const express = require("express");
 const app = express();
 const path = require("path");
+const multer = require('multer');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -12,8 +14,41 @@ const conf = JSON.parse(fs.readFileSync("public/conf.json")).dbLogin;
 
 conf.ssl.ca = fs.readFileSync(__dirname + '/ca.pem');
 const connection = mysql.createConnection(conf);
+const uploadDirectory = path.join(__dirname, 'files');
 
 const server = http.createServer(app);
+
+//Upload FILE
+//------------------------------INIZIO------------------------------
+let storage = multer.diskStorage({
+   destination: function (req, file, callback) {
+       callback(null, uploadDirectory);
+   },
+   filename: function (req, file, callback) {
+       callback(null, file.originalname);
+   }
+});
+
+const upload = multer({ storage: storage }).single('file');
+app.use("/", express.static(path.join(__dirname, "public")));
+app.use("/files", express.static(path.join(__dirname, "files")));
+
+// aggiunta filelist
+app.get("/filelist", (req, res) => {
+   let files = fs.readdirSync(uploadDirectory);
+   files = files.map(file => "./files/" + file);
+   res.json(files);
+});
+
+
+app.post('/upload', (req, res) => {
+   upload(req, res, (err) => {
+       console.log('File caricato:', req.file.filename);
+       res.json({ url: "./files/" + req.file.filename });
+   });
+});
+
+//-------------------------FINE------------------------
 
 app.post("/slider/add", (req, res) => {
    const newImage = req.body;
