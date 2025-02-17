@@ -16,7 +16,7 @@ document.getElementById("buttonConfermaLogin").onclick = () => {
                 login.validateLogin();
                 window.location.hash = "#admin";
             } else {
-                alert("SEGEYS");
+                alert("Credenziali errate");
             }
         }, console.log);
     } else {

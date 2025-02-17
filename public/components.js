@@ -25,21 +25,6 @@ export const createMiddleware = () => {
                     })
             })
         },
-        put: (images) => {
-            return new Promise((resolve, reject) => {
-                fetch("/images/complete", {
-                    method: 'PUT',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(images)
-                })
-                    .then((response) => response.json())
-                    .then((json) => {
-                        resolve(json);
-                    })
-            })
-        },
         delete: (id) => {
             return new Promise((resolve, reject) => {
                 fetch("/images/" + id, {
@@ -54,6 +39,23 @@ export const createMiddleware = () => {
     }
 }
 
+//Componente PubSub
+const createPubSub = () => {
+    const dict = {};
+    return {
+        subscribe: (eventName, callback) => {
+            if (!dict[eventName]) {
+                dict[eventName] = [];
+            }
+            dict[eventName].push(callback);
+        },
+        publish: (eventName) => {
+            dict[eventName].forEach((callback) => callback());
+        }
+    }
+}
+export const pubSub = createPubSub();
+
 //Componente Tabella
 export const createList = (newElement) => {
     let tableData;
@@ -67,8 +69,8 @@ export const createList = (newElement) => {
                 <button class="add-button"><b>+</b></button>
             </div>`;
             tableData.forEach((image,index) => {
-                //--------------------------------------------CAMBIARE NOME-------------------------------------------------------
-                const imageName = image.url
+                let temp = image.url.split("/");
+                const imageName = temp[temp.length - 1];
                 row += `<div style="text-align: left; padding-bottom:2%;">
                             <a href=""><h1 class="image-name">${imageName}</h1></a>
                             <button id="button-delete-${index}" class="delete-button"><b>X</b></button>
@@ -78,6 +80,7 @@ export const createList = (newElement) => {
 
             tableData.forEach((images,index) => {
                 document.getElementById(`button-delete-${index}`).onclick = () => {
+                    pubSub.publish("delete");
                     //--------------------------------------FINIRE-------------------------------------------
                 }
             })
@@ -148,7 +151,6 @@ export const createNavigator = () => {
     const pages = Array.from(document.querySelectorAll(".page"));
  
     const render = () => {
-       console.log("aaaaa");
        const url = new URL(document.location.href);
        const pageName = url.hash.replace("#", "");
        const selected = pages.filter((page) => page.id === pageName)[0] || pages[0];
