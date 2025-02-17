@@ -22,14 +22,15 @@ body {
   height:60%;
   background-color: rgb(98, 160, 247); 
   left:50%;
+  top:50%;
   border-radius:15px;
   flex-direction: column;
-  transform:translate(-50%,0)
+  transform:translate(-50%,-50%)
 }
 
 .back-container {
   position:absolute;
-  width:60%; 
+  width:50%; 
   height:90%;
   background-color: rgb(98, 160, 247); 
   left:50%;
@@ -97,6 +98,26 @@ body {
   font-size: 20px;
   border-radius:10px;
   border-width:1px;
+}
+
+.add-button {
+  width:50px;
+  height:50px;
+  background-color: green;
+  text-align: center;
+  float:right;
+  margin-right:10px;
+  font-size: 25px;
+}
+
+.delete-button {
+  width:50px;
+  height:50px;
+  background-color: red;
+  text-align: center;
+  float:right;
+  margin-right:10px;
+  font-size: 25px;
 }
 
 .image-name {
