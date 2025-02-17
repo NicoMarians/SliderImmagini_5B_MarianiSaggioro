@@ -6,22 +6,24 @@ const table = createList(document.getElementById("tabellaImmagini"));
 const login = createLogin();
 const carosello = createCarosello(document.getElementById("divCarosello"));
 
-middleware.load().then((newData) => {
-    console.log(newData);
-    table.setTableData(newData);
-    carosello.setImages(newData);
-    table.render();
-})
-
-
-
 pubSub.subscribe("setDeleteOnclick",() => {
-    const data = middleware.load();
-    data.forEach((element) => {
-        document.getElementById(`button-delete-${element.id}`).onclick = () => {
-            middleware.delete(element.id);
-        }
-    });
+    console.log("aaaa");
+    middleware.load().then((newData) => {
+        newData.forEach((element) => {
+            console.log(element);
+            document.getElementById(`button-delete-${element.id}`).onclick = () => {
+                middleware.delete(element.id).then((response) => {
+                    console.log(response);
+                    middleware.load().then((newData) => {
+                        table.setTableData(newData);
+                        carosello.setImages(newData);
+                        table.render();
+                        pubSub.publish("renderCarosello");
+                    })
+                })
+            }
+        });
+    })
 });
 
 pubSub.subscribe("renderCarosello",carosello.render);
@@ -31,6 +33,13 @@ pubSub.subscribe("get",middleware.load);
 pubSub.subscribe("set",middleware.send);
 pubSub.subscribe("del",middleware.delete);
 
+middleware.load().then((newData) => {
+    console.log(newData);
+    table.setTableData(newData);
+    carosello.setImages(newData);
+    table.render();
+    pubSub.publish("renderCarosello");
+});
 
 //Upload File
 
@@ -51,6 +60,8 @@ const handleSubmit = async (event) => {
             console.log(newData);
             table.setTableData(newData);
             carosello.setImages(newData);
+            table.render();
+            carosello.render();
         })  
     } catch (e) {
         console.log(e);
@@ -100,8 +111,8 @@ document.getElementById("buttonConfermaFile").onclick = handleSubmit;
 
 document.getElementById("back-button-view").onclick = () => {
     window.location.hash = "#admin";
-}
+};
 
 document.getElementById("home-button-admin").onclick = () => {
     window.location.hash = "#home"
-}
+};

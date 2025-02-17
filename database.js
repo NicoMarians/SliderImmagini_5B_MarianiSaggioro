@@ -50,7 +50,7 @@ const database = {
         return executeQuery(sql); 
     },
 
-    deleteTodo: (id) => {
+    delete: (id) => {
         const sql = `DELETE FROM slider WHERE id = ?`;
 
         return new Promise((resolve, reject) => {

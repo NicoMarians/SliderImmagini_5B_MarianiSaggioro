@@ -27,7 +27,7 @@ export const createMiddleware = () => {
         },
         delete: (id) => {
             return new Promise((resolve, reject) => {
-                fetch("http://localhost:5600/slider/" + id, {
+                fetch(`http://localhost:5600/delete/${id}`, {
                     method: 'DELETE'                
                 })
                     .then((response) => response.json())
@@ -45,11 +45,12 @@ const createPubSub = () => {
     return {
         subscribe: (eventName, callback) => {
             if (!dict[eventName]) {
-                dict[eventName] = callback;
+                dict[eventName] = [];
             }
+            dict[eventName].push(callback);
         },
         publish: (eventName) => {
-            dict[eventName];
+            dict[eventName].forEach((callback) => callback());
         }
     }
 }
@@ -71,7 +72,7 @@ export const createList = (newElement) => {
                 let temp = image.url.split("/");
                 const imageName = temp[temp.length - 1];
                 line += `<div style="text-align: left; padding-bottom:2%;">
-                            <a id="view-${index}"><h1 class="image-name">${imageName}</h1></a>
+                            <a id="view-${image.id}"><h1 class="image-name">${imageName}</h1></a>
                             <button id="button-delete-${image.id}" class="delete-button"><b>X</b></button>
                         </div>`
             });
@@ -81,7 +82,7 @@ export const createList = (newElement) => {
             }
 
             tableData.forEach((image,index) => {
-                document.getElementById(`view-${index}`).onclick = () => {
+                document.getElementById(`view-${image.id}`).onclick = () => {
                     console.log(image.url);
                     document.getElementById("viewImmagine").innerHTML = `<img alt = "IMMAGINE" src="../${image.url}" style="height:100%">`;
                     window.location.hash = "#view";
@@ -103,23 +104,26 @@ export const createCarosello = (newElement) => {
     let displayedImage = 0;
     return {
         render: () => {
-            bindingElement.innerHTML = `<img href="${images[displayedImage].url}" alt="IMMAGINE">`
+            console.log("render");
+            bindingElement.innerHTML = `<img src="../${images[displayedImage].url}" alt="IMMAGINE" style = "width: 100%">`;
         },
         setImages: (newImages) => {
-            images = newImages
+            images = newImages;
         },
         displayImageRight: () => {
+            console.log("right");
             if (displayedImage + 1 >= images.length) displayedImage = 0;
-            else displayedImage += 1
+            else displayedImage += 1;
             pubSub.publish("renderCarosello");
         },
         displayImageLeft: () => {
+            console.log("left");
             if (displayedImage - 1 < 0) displayedImage = images.length - 1;
-            else displayedImage -= 1
+            else displayedImage -= 1;
             pubSub.publish("renderCarosello");
         }
     }
-}
+};
 
 //Componente Navigatore
 
