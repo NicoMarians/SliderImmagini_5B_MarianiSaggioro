@@ -171,12 +171,7 @@ export const createNavigator = (parentElement) => {
 
 
 //Componente LOGIN
-const registerButton = document.getElementById("register-button");
 const loginButton = document.getElementById("login-button");
-const logoutButton = document.getElementById("logout-button");
-const privateSection = document.getElementById("private-section");
-const registerUsername = document.getElementById("register-username");
-const registerPassword = document.getElementById("register-password");
 const loginUsername = document.getElementById("login-username");
 const loginPassword = document.getElementById("login-password");
 
