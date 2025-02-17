@@ -52,5 +52,3 @@ const handleSubmit = async (event) => {
         console.log(e);
     }
 }
-
-button.onclick = handleSubmit;

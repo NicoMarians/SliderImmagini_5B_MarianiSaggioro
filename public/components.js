@@ -162,20 +162,13 @@ export const createNavigator = () => {
 
 
 //Componente LOGIN
-const isLogged = sessionStorage.getItem("Logged") === "true";
-
-if (isLogged) {
-  openModalButton.classList.remove("hidden");
-  modifyButton.classList.remove("hidden");
-  deleteButton.classList.remove("hidden");
-}
 
 export const createLogin = () => {
     let isLogged = false;
     return {
         checkLogin: (username, password) => {
-            fetch("conf.json").then((response) => response.json()).then((confData) => {
-                new Promise ((resolve,reject) => {
+            return new Promise ((resolve,reject) => {
+                fetch("conf.json").then((response) => response.json()).then((confData) => {
                     fetch("https://ws.cipiaceinfo.it/credential/login", {
                         method: "POST",
                         headers: {
@@ -186,9 +179,12 @@ export const createLogin = () => {
                     })
                     .then((response) => response.json())
                     .then((result) => {
+                        console.log("GAY")
                         resolve(result)
                     })
                     .catch((error) => {
+                        console.log("GAY")
+
                         console.error("Errore login:", error);
                         alert("Login fallito. Controlla le credenziali.");
                         reject (result)
