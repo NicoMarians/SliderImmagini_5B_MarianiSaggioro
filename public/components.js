@@ -143,7 +143,7 @@ document.getElementById("buttonCancella").onclick = () => {
 document.getElementById("adminButton").onclick = () => {
     window.location.hash = "#login";
 };
- 
+
 export const createNavigator = () => {
     const pages = Array.from(document.querySelectorAll(".page"));
  
@@ -179,15 +179,12 @@ export const createLogin = () => {
                     })
                     .then((response) => response.json())
                     .then((result) => {
-                        console.log("GAY")
-                        resolve(result)
+                        resolve(result.result);
                     })
                     .catch((error) => {
-                        console.log("GAY")
-
                         console.error("Errore login:", error);
-                        alert("Login fallito. Controlla le credenziali.");
-                        reject (result)
+                        alert("Errore");
+                        reject (result);
                     });
                 })
             });

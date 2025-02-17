@@ -10,7 +10,15 @@ document.getElementById("buttonConfermaLogin").onclick = () => {
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
     if (username && password) {
-        login.checkLogin(username, password).then(console.log, console.log);
+        login.checkLogin(username, password).then((result) => {
+            console.log(result);
+            if (result === true) {
+                login.validateLogin();
+                window.location.hash = "#admin";
+            } else {
+                alert("SEGEYS");
+            }
+        }, console.log);
     } else {
       alert("Compila tutti i campi.");
     }
